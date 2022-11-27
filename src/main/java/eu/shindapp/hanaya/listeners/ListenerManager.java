@@ -12,7 +12,7 @@ public class ListenerManager {
         api = HanayaCore.getApi();
 
         api.addEventListener(
-                //... Coming Soon
+                new RaidModeListener()
         );
     }
 }
