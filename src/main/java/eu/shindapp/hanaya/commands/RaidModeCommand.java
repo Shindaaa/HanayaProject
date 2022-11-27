@@ -32,32 +32,32 @@ public class RaidModeCommand extends ListenerAdapter {
             if (author.getRoles().contains(event.getGuild().getRoleById("1024348109721043005")) || //mod role
             author.getRoles().contains(event.getGuild().getRoleById("1024348110891257976")) || //resp staff role
             author.getRoles().contains(event.getGuild().getRoleById("1024348106105552988")) || //owner role
-            author.getRoles().contains(event.getGuild().getRoleById("1024348108152389712"))) //admin role
+            author.getRoles().contains(event.getGuild().getRoleById("1024348108152389712"))) { //admin role
+                if (!desiredStatus) {
+                    HanayaCore.setRaidModeStatus(false);
+                    event.getChannel().sendMessageEmbeds(
+                            new EmbedBuilder()
+                                    .setColor(0x0000F)
+                                    .setDescription("Le mode RAID est maintenant désactivé!\n" +
+                                            "\n" +
+                                            "<a:Orb:710574046995283979> Tout le monde peut à présent rejoindre le discord !")
+                                    .setFooter("HanayaShield", event.getGuild().getIconUrl())
+                                    .setTimestamp(Instant.now())
+                                    .build()
+                    ).queue(msg -> msg.delete().queueAfter(1, TimeUnit.MINUTES));
+                }
 
-            if (!desiredStatus) {
-                HanayaCore.setRaidModeStatus(false);
-                event.getChannel().sendMessageEmbeds(
-                        new EmbedBuilder()
-                                .setColor(0x0000F)
-                                .setDescription("Le mode RAID est maintenant désactivé!\n" +
-                                        "\n" +
-                                        "<a:Orb:710574046995283979> Tout le monde peut à présent rejoindre le discord !")
-                                .setFooter("HanayaShield", event.getGuild().getIconUrl())
-                                .setTimestamp(Instant.now())
-                                .build()
-                ).queue(msg -> msg.delete().queueAfter(1, TimeUnit.MINUTES));
-            }
-
-            if (desiredStatus) {
-                event.getHook().sendMessageEmbeds(
-                        new EmbedBuilder()
-                                .setColor(0x0000F)
-                                .setAuthor("Raid-Mode", null, event.getGuild().getIconUrl())
-                                .setDescription("Souhaitez vous vraiment activer le mode RAID sur le serveur ?\nActiver ce mode empèchera quiconque de rejoindre le discord.\n\n*Si vous souhaitez annuler cette action supprimez juste ce message.*")
-                                .build()
-                ).addActionRow(
-                        Button.danger(String.valueOf(buttonId), "Activer").withEmoji(Emoji.fromUnicode("⚠️"))
-                ).setEphemeral(true).queue();
+                if (desiredStatus) {
+                    event.getHook().sendMessageEmbeds(
+                            new EmbedBuilder()
+                                    .setColor(0x0000F)
+                                    .setAuthor("Raid-Mode", null, event.getGuild().getIconUrl())
+                                    .setDescription("Souhaitez vous vraiment activer le mode RAID sur le serveur ?\nActiver ce mode empèchera quiconque de rejoindre le discord.\n\n*Si vous souhaitez annuler cette action supprimez juste ce message.*")
+                                    .build()
+                    ).addActionRow(
+                            Button.danger(String.valueOf(buttonId), "Activer").withEmoji(Emoji.fromUnicode("⚠️"))
+                    ).setEphemeral(true).queue();
+                }
             }
         }
     }
