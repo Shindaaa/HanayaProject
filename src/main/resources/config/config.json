@@ -1,4 +1,9 @@
 {
   "bot-token": "",
-  "bot-mainGuildId": ""
+  "bot-mainGuildId": "",
+  "bot-onMainGuildOnly": false,
+
+  "verification-enabled": false,
+  "verification-verified-roleId": "",
+  "verification-channelId": ""
 }
