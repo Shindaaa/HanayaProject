@@ -15,17 +15,20 @@ public class AgreeCommand extends ListenerAdapter {
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
 
         if (event.getName().equals("agree")) {
+            event.deferReply(true).queue();
 
             Member author = event.getMember();
+            assert author != null;
             Guild guild = event.getGuild();
-            Role verifiedRole = event.getGuild().getRoleById(new ConfigUtils().getString("verification-verified-roleId"));
-            event.deferReply(true).queue();
+            assert guild != null;
+
+            Role verifiedRole = guild.getRoleById(new ConfigUtils().getString("verification-verified-roleId"));
 
             if (event.getChannel().getId().equals(new ConfigUtils().getString("verification-channelId"))) {
                 if (!author.getUser().isBot()) {
                     if (!author.getRoles().contains(guild.getRoleById(new ConfigUtils().getString("verification-verified-roleId")))) {
                         try {
-                            event.getGuild().getManager().getGuild().addRoleToMember(author, verifiedRole).queue();
+                            guild.getManager().getGuild().addRoleToMember(author, verifiedRole).queue();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

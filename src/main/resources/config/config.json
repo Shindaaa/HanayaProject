@@ -5,5 +5,11 @@
 
   "verification-enabled": false,
   "verification-verified-roleId": "",
-  "verification-channelId": ""
+  "verification-channelId": "",
+
+  "mysql-enabled": false,
+  "mysql-database": "",
+  "mysql-username": "",
+  "mysql-port": 3306,
+  "mysql-password": ""
 }
