@@ -42,7 +42,7 @@ public class HanayaCore {
         if (new ConfigUtils().getBoolean("mysql-enabled")) {
             try {
                 logger.info("Connecting to MySQL Database...");
-                connectionSource = new JdbcConnectionSource("jdbc:mariadb://", new ConfigUtils().getString("mysql-username"), "mysql-password");
+                connectionSource = new JdbcConnectionSource("jdbc:mariadb://" + new ConfigUtils().getString("mysql-host") + ":" + new ConfigUtils().getInt("mysql-port") + "/" + new ConfigUtils().getString("mysql-database") + "?autoReconnect=true&wait_timeout=172800", new ConfigUtils().getString("mysql-username"), new ConfigUtils().getString("mysql-password"));
                 logger.info("Successfully connected to MySQL Database ! Starting loading all tables...");
 
                 hanayaMembersDao = DaoManager.createDao(connectionSource, HanayaMembers.class);

@@ -8,6 +8,7 @@
   "verification-channelId": "",
 
   "mysql-enabled": false,
+  "mysql-host": "",
   "mysql-database": "",
   "mysql-username": "",
   "mysql-port": 3306,
