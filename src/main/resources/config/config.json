@@ -11,5 +11,10 @@
   "mysql-database": "",
   "mysql-username": "",
   "mysql-port": 3306,
-  "mysql-password": ""
+  "mysql-password": "",
+
+  "command-agree-enabled": false,
+  "command-permanent-ban-enabled": false,
+  "command-timeout-enabled": false,
+  "command-kick-enabled": false
 }

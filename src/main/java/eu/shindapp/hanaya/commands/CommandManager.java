@@ -1,6 +1,9 @@
 package eu.shindapp.hanaya.commands;
 
 import eu.shindapp.hanaya.HanayaCore;
+import eu.shindapp.hanaya.commands.moderation.AgreeCommand;
+import eu.shindapp.hanaya.commands.moderation.BanCommand;
+import eu.shindapp.hanaya.commands.moderation.KickCommand;
 import eu.shindapp.hanaya.utils.ConfigUtils;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
@@ -37,11 +40,38 @@ public class CommandManager {
                                         new SubcommandData("permanent", "Cette commande permet de bannir un membre du discord de manière définitive.")
                                                 .addOptions(
                                                         new OptionData(OptionType.USER, "user", "La personne à bannir", true),
-                                                        new OptionData(OptionType.STRING, "reason", "La raison de cette action (non obligatoire)", false)),
-                                        new SubcommandData("temporaire", "Cette commande permet de bannir un membre du discord de manière temporaire.")
-                                                .addOptions(
-                                                        new OptionData(OptionType.USER, "user", "La personne à bannir", true),
-                                                        new OptionData(OptionType.STRING, "reason", "La raison de cette action (non obligatoire)", false)))
+                                                        new OptionData(OptionType.STRING, "reason", "La raison de cette action (non obligatoire)", false))),
+
+                Commands.slash("kick", "Cette commande permet de kick un membre du discord.")
+                        .addOptions(
+                                new OptionData(OptionType.USER, "user", "La personne à bannir", true),
+                                new OptionData(OptionType.STRING, "reason", "La raison de cette action (non obligatoire)", false)),
+
+                Commands.slash("timeout", "Cette commande permet d'empêcher une personne d'écrire et de parler pendant un temps donné.")
+                        .addOptions(
+                                new OptionData(OptionType.USER, "user", "La personne à timeout", true),
+                                new OptionData(OptionType.INTEGER, "duration", "pendant combien de temps ? (en chiffre)", true),
+                                new OptionData(OptionType.STRING, "timeUnit", "pendant combien de temps ? (unité de temps)", true)
+                                        .addChoice("Jours", "days")
+                                        .addChoice("Heures", "hours")
+                                        .addChoice("Minutes", "minutes")
+                                        .addChoice("Secondes", "seconds"),
+                                new OptionData(OptionType.STRING, "reason", "La raison de cette action (non obligatoire)", false)),
+
+                Commands.slash("avatar", "Affiche l'avatar d'une personne mentionnée.")
+                        .addOptions(
+                                new OptionData(OptionType.USER, "user", "la personne dont vous voulez voir l'avatar.")
+                                        .setRequired(false)),
+
+                Commands.slash("banner", "Affiche la bannière d'une personne mentionnée.")
+                        .addOptions(
+                                new OptionData(OptionType.USER, "user", "la personne dont vous voulez voir la bannière.")
+                                        .setRequired(false)),
+
+                Commands.slash("info", "Permet d'avoir plus d'information à propos d'une personne mentionnée.")
+                        .addOptions(
+                                new OptionData(OptionType.USER, "user", "la personne dont vous voulez avoir plus d'informations")
+                                        .setRequired(false))
         ).queue();
 
         if (new ConfigUtils().getBoolean("verification-enabled")) {
@@ -57,6 +87,7 @@ public class CommandManager {
             api.addEventListener(new AgreeCommand());
         }
 
-        api.addEventListener(new PermanentBanCommand());
+        api.addEventListener(new BanCommand());
+        api.addEventListener(new KickCommand());
     }
 }

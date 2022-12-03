@@ -1,6 +1,7 @@
-package eu.shindapp.hanaya.commands;
+package eu.shindapp.hanaya.commands.moderation;
 
 import eu.shindapp.hanaya.HanayaCore;
+import eu.shindapp.hanaya.utils.ConfigUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -10,7 +11,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.util.concurrent.TimeUnit;
 
-public class PermanentBanCommand extends ListenerAdapter {
+public class BanCommand extends ListenerAdapter {
 
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
@@ -24,13 +25,27 @@ public class PermanentBanCommand extends ListenerAdapter {
         if (event.getName().equals("ban") && event.getSubcommandName().equals("permanent")) {
             event.deferReply(true).queue();
 
+            if (!new ConfigUtils().getBoolean("command-permanent-ban-enabled")) {
+                event.getHook().sendMessageEmbeds(
+                        new EmbedBuilder()
+                                .setColor(0x36393F)
+                                .setAuthor("Commande désactivé", null, "https://cdn.discordapp.com/attachments/856076221687660574/1048324320629374976/error-message.png")
+                                .setDescription("Cette commande est actuellement désactivée dans le fichier de configuration.")
+                                .setImage("https://cdn.discordapp.com/attachments/856076221687660574/856086449404903434/barre.rouge2.png")
+                                .build()
+                ).queue();
+                return;
+            }
+
             if (userHasModRole(author)) {
 
                 if (event.getOption("user") == null) {
                     event.getHook().sendMessageEmbeds(
                             new EmbedBuilder()
-                                    .setColor(0xff0000)
+                                    .setColor(0x36393F)
+                                    .setAuthor("Utilisateur introuvable", null, "https://cdn.discordapp.com/attachments/856076221687660574/1048324320629374976/error-message.png")
                                     .setDescription("La personne mentionnée est introuvable sur le discord.")
+                                    .setImage("https://cdn.discordapp.com/attachments/856076221687660574/856086449404903434/barre.rouge2.png")
                                     .build()
                     ).queue();
                     return;
@@ -46,8 +61,10 @@ public class PermanentBanCommand extends ListenerAdapter {
                 target.ban(7, TimeUnit.DAYS).reason(reason).queue();
                 event.getHook().sendMessageEmbeds(
                         new EmbedBuilder()
-                                .setColor(0xff0000)
-                                .setDescription("Rappel:\n\n・Vous avez banni " + target.getUser().getAsTag() + "(" + target.getId() + ")\n・Pour raison: " + reason)
+                                .setColor(0x36393F)
+                                .setAuthor("Sanction effectuée", null, "https://cdn.discordapp.com/attachments/856076221687660574/1048324312064593970/ban-user.png")
+                                .setDescription(target.getUser().getAsTag() + " a bien été banni du discord.")
+                                .setImage("https://cdn.discordapp.com/attachments/856076221687660574/857224409532989450/barre.verte2.png")
                                 .build()
                 ).queue();
                 HanayaCore.getLogger().info("[PERMANENT BAN] user:(" + target.getId() + ") got banned from guild:(" + guild.getId() + ") with reason:(" + reason + ")");
@@ -56,8 +73,10 @@ public class PermanentBanCommand extends ListenerAdapter {
 
             event.getHook().sendMessageEmbeds(
                     new EmbedBuilder()
-                            .setColor(0xff0000)
+                            .setColor(0x36393F)
+                            .setAuthor("Accès refusé", null, "https://cdn.discordapp.com/attachments/856076221687660574/1048324320629374976/error-message.png")
                             .setDescription("Votre rang n'authorise pas l'utilisation de cette commande.")
+                            .setImage("https://cdn.discordapp.com/attachments/856076221687660574/856086449404903434/barre.rouge2.png")
                             .build()
             ).queue();
         }

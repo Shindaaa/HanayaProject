@@ -1,7 +1,13 @@
 package eu.shindapp.hanaya;
 
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
+import com.j256.ormlite.table.TableUtils;
 import eu.shindapp.hanaya.commands.CommandManager;
+import eu.shindapp.hanaya.models.HanayaLogChannels;
+import eu.shindapp.hanaya.models.HanayaMembers;
+import eu.shindapp.hanaya.models.HanayaSanctions;
 import eu.shindapp.hanaya.utils.ConfigUtils;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -16,6 +22,10 @@ public class HanayaCore {
     private static JDA api;
 
     private static JdbcConnectionSource connectionSource;
+
+    private static Dao<HanayaMembers, String> hanayaMembersDao;
+    private static Dao<HanayaSanctions, String> hanayaSanctionsDao;
+    private static Dao<HanayaLogChannels, String> hanayaLogChannels;
 
     private static Logger logger = Logger.getGlobal();
 
@@ -33,7 +43,16 @@ public class HanayaCore {
             try {
                 logger.info("Connecting to MySQL Database...");
                 connectionSource = new JdbcConnectionSource("jdbc:mariadb://", new ConfigUtils().getString("mysql-username"), "mysql-password");
-                logger.info("Successfully connected to SQL Database!");
+                logger.info("Successfully connected to MySQL Database ! Starting loading all tables...");
+
+                hanayaMembersDao = DaoManager.createDao(connectionSource, HanayaMembers.class);
+                TableUtils.createTableIfNotExists(connectionSource, HanayaMembers.class);
+                hanayaSanctionsDao = DaoManager.createDao(connectionSource, HanayaSanctions.class);
+                TableUtils.createTableIfNotExists(connectionSource, HanayaSanctions.class);
+                hanayaLogChannels = DaoManager.createDao(connectionSource, HanayaLogChannels.class);
+                TableUtils.createTableIfNotExists(connectionSource, HanayaLogChannels.class);
+                logger.info("All MySQL tables loaded.");
+
             } catch (SQLException e) {
                 logger.severe("An error occurred while connecting to the MySQL Database.\nError message " + e.getMessage());
                 System.exit(0);
