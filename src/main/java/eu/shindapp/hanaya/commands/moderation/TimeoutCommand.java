@@ -68,7 +68,7 @@ public class TimeoutCommand extends ListenerAdapter {
 
                 int duration = event.getOption("duration").getAsInt();
 
-                if (event.getOption("timeUnit") == null || retrieveTimeUnit(event.getOption("timeUnit").getAsString()) == null) {
+                if (event.getOption("time_unit") == null || retrieveTimeUnit(event.getOption("time_unit").getAsString()) == null) {
                     event.getHook().sendMessageEmbeds(
                             new EmbedBuilder()
                                     .setColor(0x36393F)
@@ -80,7 +80,7 @@ public class TimeoutCommand extends ListenerAdapter {
                     return;
                 }
 
-                String timeUnit = event.getOption("timeUnit").getAsString();
+                String timeUnit = event.getOption("time_unit").getAsString();
 
                 if (event.getOption("reason") == null) {
                     reason = "Aucune raison donnée (Timeout par " + author.getUser().getAsTag() + ")";

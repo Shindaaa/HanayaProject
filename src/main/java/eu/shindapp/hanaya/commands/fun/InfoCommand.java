@@ -60,7 +60,7 @@ public class InfoCommand extends ListenerAdapter {
     private void sendInfoEmbed(SlashCommandInteractionEvent event, Member author, Member target, StringBuilder rolesList) {
         event.getHook().sendMessageEmbeds(
                 new EmbedBuilder()
-                        .setColor(0x8e00ff)
+                        .setColor(0x36393F)
                         .setAuthor(target.getUser().getAsTag(), null, target.getUser().getEffectiveAvatarUrl())
                         .setDescription(target.getAsMention())
                         .addField("ID", target.getUser().getId(), false)

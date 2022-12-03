@@ -1,9 +1,13 @@
 package eu.shindapp.hanaya.commands;
 
 import eu.shindapp.hanaya.HanayaCore;
+import eu.shindapp.hanaya.commands.fun.AvatarCommand;
+import eu.shindapp.hanaya.commands.fun.BannerCommand;
+import eu.shindapp.hanaya.commands.fun.InfoCommand;
 import eu.shindapp.hanaya.commands.moderation.AgreeCommand;
 import eu.shindapp.hanaya.commands.moderation.BanCommand;
 import eu.shindapp.hanaya.commands.moderation.KickCommand;
+import eu.shindapp.hanaya.commands.moderation.TimeoutCommand;
 import eu.shindapp.hanaya.utils.ConfigUtils;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
@@ -51,7 +55,7 @@ public class CommandManager {
                         .addOptions(
                                 new OptionData(OptionType.USER, "user", "La personne à timeout", true),
                                 new OptionData(OptionType.INTEGER, "duration", "pendant combien de temps ? (en chiffre)", true),
-                                new OptionData(OptionType.STRING, "timeUnit", "pendant combien de temps ? (unité de temps)", true)
+                                new OptionData(OptionType.STRING, "time_unit", "pendant combien de temps ? (unité de temps)", true)
                                         .addChoice("Jours", "days")
                                         .addChoice("Heures", "hours")
                                         .addChoice("Minutes", "minutes")
@@ -89,5 +93,9 @@ public class CommandManager {
 
         api.addEventListener(new BanCommand());
         api.addEventListener(new KickCommand());
+        api.addEventListener(new TimeoutCommand());
+        api.addEventListener(new AvatarCommand());
+        api.addEventListener(new BannerCommand());
+        api.addEventListener(new InfoCommand());
     }
 }
