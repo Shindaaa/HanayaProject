@@ -16,5 +16,8 @@
   "command-agree-enabled": false,
   "command-permanent-ban-enabled": false,
   "command-timeout-enabled": false,
-  "command-kick-enabled": false
+  "command-kick-enabled": false,
+  "command-avatar-enabled": false,
+  "command-banner-enabled": false,
+  "command-info-enabled": false
 }
