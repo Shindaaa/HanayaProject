@@ -77,4 +77,18 @@ public class ConfigUtils {
         } else init();
         return false;
     }
+
+    public Integer getInt(String key) {
+        if (configurationDirectoryExist()) {
+            if (configurationFileExist()) {
+                try {
+                    JSONObject jsonObject = (JSONObject) new JSONParser().parse(new FileReader("./config/config.json"));
+                    return (Integer) jsonObject.get(key);
+                } catch (IOException | ParseException e) {
+                    e.printStackTrace();
+                }
+            } else init();
+        } else init();
+        return null;
+    }
 }
