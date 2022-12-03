@@ -11,7 +11,7 @@
   "mysql-host": "",
   "mysql-database": "",
   "mysql-username": "",
-  "mysql-port": 3306,
+  "mysql-port": "",
   "mysql-password": "",
 
   "command-agree-enabled": false,
