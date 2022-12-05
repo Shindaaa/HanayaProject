@@ -89,4 +89,16 @@ public class HanayaCore {
     public static JdbcConnectionSource getConnectionSource() {
         return connectionSource;
     }
+
+    public static Dao<HanayaMembers, String> getHanayaMembersDao() {
+        return hanayaMembersDao;
+    }
+
+    public static Dao<HanayaSanctions, String> getHanayaSanctionsDao() {
+        return hanayaSanctionsDao;
+    }
+
+    public static Dao<HanayaLogChannels, String> getHanayaLogChannels() {
+        return hanayaLogChannels;
+    }
 }

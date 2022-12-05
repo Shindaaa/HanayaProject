@@ -1,6 +1,7 @@
 package eu.shindapp.hanaya.commands.moderation;
 
 import eu.shindapp.hanaya.HanayaCore;
+import eu.shindapp.hanaya.models.HanayaSanctions;
 import eu.shindapp.hanaya.utils.ConfigUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
@@ -39,7 +40,7 @@ public class BanCommand extends ListenerAdapter {
 
             if (userHasModRole(author)) {
 
-                if (event.getOption("user") == null) {
+                if (event.getOption("user") == null || event.getOption("reason").equals("")) {
                     event.getHook().sendMessageEmbeds(
                             new EmbedBuilder()
                                     .setColor(0x36393F)
@@ -67,6 +68,18 @@ public class BanCommand extends ListenerAdapter {
                                 .setImage("https://cdn.discordapp.com/attachments/856076221687660574/857224409532989450/barre.verte2.png")
                                 .build()
                 ).queue();
+
+                try {
+                    HanayaSanctions hanayaSanctions = new HanayaSanctions();
+                    hanayaSanctions.setType("ban");
+                    hanayaSanctions.setReason(reason);
+                    hanayaSanctions.setModId(event.getMember().getId());
+                    hanayaSanctions.setUserId(target.getId());
+                    hanayaSanctions.save();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
                 HanayaCore.getLogger().info("[PERMANENT BAN] user:(" + target.getId() + ") got banned from guild:(" + guild.getId() + ") with reason:(" + reason + ")");
                 return;
             }

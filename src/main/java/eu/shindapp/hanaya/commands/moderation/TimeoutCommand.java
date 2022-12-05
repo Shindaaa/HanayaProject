@@ -1,6 +1,7 @@
 package eu.shindapp.hanaya.commands.moderation;
 
 import eu.shindapp.hanaya.HanayaCore;
+import eu.shindapp.hanaya.models.HanayaSanctions;
 import eu.shindapp.hanaya.utils.ConfigUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
@@ -82,7 +83,7 @@ public class TimeoutCommand extends ListenerAdapter {
 
                 String timeUnit = event.getOption("time_unit").getAsString();
 
-                if (event.getOption("reason") == null) {
+                if (event.getOption("reason") == null || event.getOption("reason").equals("")) {
                     reason = "Aucune raison donnée (Timeout par " + author.getUser().getAsTag() + ")";
                 }
 
@@ -95,6 +96,18 @@ public class TimeoutCommand extends ListenerAdapter {
                                 .setImage("https://cdn.discordapp.com/attachments/856076221687660574/857224409532989450/barre.verte2.png")
                                 .build()
                 ).queue();
+
+                try {
+                    HanayaSanctions hanayaSanctions = new HanayaSanctions();
+                    hanayaSanctions.setType("timeout");
+                    hanayaSanctions.setReason(reason);
+                    hanayaSanctions.setModId(event.getMember().getId());
+                    hanayaSanctions.setUserId(target.getId());
+                    hanayaSanctions.save();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
                 HanayaCore.getLogger().info("[TIMEOUT] user:(" + target.getId() + ") got Timed out from guild:(" + guild.getId() + ") with reason:(" + reason + ")");
                 return;
             }
